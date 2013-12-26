@@ -31,9 +31,8 @@ module.exports = function(grunt) {
         var newViewContent = '';
         var minTempContent = mtmin(html);
         //生成view属性
-        var viewObj = new jsProc(js);
-        newViewContent = viewObj.addProp("template", minTempContent).getCode();
-        //中文转unicode
+        newViewContent = jsProc.removeConsoleX(js);
+        newViewContent = jsProc.addProp(newViewContent, 'template', minTempContent);
         newViewContent = Converter.chineseToUnicode(newViewContent);
         return newViewContent;
     };
