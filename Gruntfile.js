@@ -4,7 +4,7 @@
 module.exports = function(grunt) {
     var appDir = grunt.option("appDir");
     var destDir = grunt.option("destDir");
-    var isDelSourceJs=grunt.option('isDelSourceJs')||true;
+    var isDelSourceJs = grunt.option('isDelSourceJs');
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         clean: {
@@ -25,21 +25,21 @@ module.exports = function(grunt) {
                 }]
             }
         },
-        combine:{
-            build:{
-                appSrc:destDir
+        combine: {
+            build: {
+                appSrc: destDir
             }
         },
-        minify:{
-            build:{
-                src:destDir,
-                isBeautify:true
+        minify: {
+            build: {
+                src: destDir,
+                isBeautify: true
             }
         },
-        clear:{
-            build:{
-                src:destDir,
-                isDelSourceJs:isDelSourceJs
+        clear: {
+            build: {
+                src: destDir,
+                isDelSourceJs: isDelSourceJs
             }
         }
     });
@@ -47,8 +47,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadTasks('tasks');
-    grunt.registerTask('pack', ['clean', 'copy', 'combine','minify','clear']);
-
+    grunt.registerTask('pack', ['clean', 'copy', 'combine', 'minify', 'clear']);
 
 
 };

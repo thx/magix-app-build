@@ -2,18 +2,8 @@
  * magix html和js的合并；js作为view的属性；
  */
 module.exports = function(grunt) {
-    var Task = grunt.task;
-    var File = grunt.file;
-    var Utils = grunt.utils;
-    var Log = grunt.log;
-    var Verbose = grunt.verbose;
-    var Fail = grunt.fail;
-    var Option = grunt.option;
-    var Config = grunt.config;
-    var Template = grunt.template;
     var Fs = require('fs');
     var Path = require('path');
-    var SEP = Path.sep;
     var Helper = require('../libs/helper');
     var mtmin = require('../libs/mtmin.js');
     var jsProc = require('../libs/jsproc');
