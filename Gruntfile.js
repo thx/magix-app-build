@@ -36,6 +36,11 @@ module.exports = function(grunt) {
                 isBeautify: true
             }
         },
+        mincss: {
+            build: {
+                src: destDir
+            }
+        },
         clear: {
             build: {
                 src: destDir,
@@ -46,8 +51,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadTasks('tasks');
-    grunt.registerTask('pack', ['clean', 'copy', 'combine', 'minify', 'clear']);
+    grunt.registerTask('pack', ['clean', 'copy', 'combine', 'minify', 'mincss', 'clear']);
 
 
 };
