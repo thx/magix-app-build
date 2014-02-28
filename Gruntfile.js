@@ -4,7 +4,9 @@
 module.exports = function(grunt) {
     var appDir = grunt.option("appDir");
     var destDir = grunt.option("destDir");
-    var isDelSourceJs = grunt.option('isDelSourceJs');
+    var compress = grunt.option('compress');
+    var c2u = grunt.option('c2u');
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         clean: {
@@ -33,7 +35,7 @@ module.exports = function(grunt) {
         minify: {
             build: {
                 src: destDir,
-                isBeautify: true
+                compress: compress
             }
         },
         mincss: {
@@ -44,7 +46,8 @@ module.exports = function(grunt) {
         clear: {
             build: {
                 src: destDir,
-                isDelSourceJs: isDelSourceJs
+                compress: compress,
+                c2u: c2u
             }
         }
     });

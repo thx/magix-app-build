@@ -1,3 +1,3 @@
 call npm install
-call grunt pack --appDir=../alimama_help/app/ --destDir=../alimama_help/build/ --isDelSourceJs=false
+grunt pack --appDir=../../public/app/ --destDir=../../public/build/app/ --compress=normal --c2u=false
 pause

@@ -14,7 +14,6 @@ module.exports = function(grunt) {
             minMap[destCss] = tarCss;
         }
 
-        console.log(minMap);
         grunt.config.set('cssmin', {
             options: {
                 keepSpecialComments: true
