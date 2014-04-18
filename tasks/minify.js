@@ -22,7 +22,8 @@ module.exports = function(grunt) {
                     drop_console: true,
                     warnings: true
                 },
-                sourceMap: compress == 'full'
+                sourceMap: compress == 'full',
+                preserveComments: 'some'
             },
             my_target: {
                 files: jsMinMap

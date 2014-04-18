@@ -74,16 +74,15 @@
                                 var start = t.start;
                                 var end = t.end;
                                 var returned = s.slice(start, end).replace(/\s*$/gm, '');
-                                var preReturned = returned.slice(0, -2);
-                                var lastReturned = returned.slice(-2);
+                                var returnedPre = returned.slice(0, -2);
+                                var returnedTail = returned.slice(-2);
                                 var tail = s.slice(end);
-                                s = s.slice(0, s.slice(0, start).lastIndexOf('return')) + ';var ' + key + '=' + preReturned;
-                                if (lastReturned == '})') {
-                                    s += ',' + name + ':' + content + lastReturned;
+                                var header = s.slice(0, start);
+                                if (returnedTail == '})') {
+                                    s = header + returnedPre + ',' + name + ':' + content + returnedTail + tail;
                                 } else {
-                                    s += lastReturned + ';' + key + '.prototype.' + name + '=' + content + ';';
+                                    s = s.slice(0, header.lastIndexOf('return')) + ';var ' + key + '=' + returnedPre + returnedTail + ';' + key + '.prototype.' + name + '=' + content + ';return ' + key + ';' + tail;
                                 }
-                                s += ';return ' + key + ';' + tail;
                             }
                         }
                     }
