@@ -60,20 +60,30 @@
                                     break;
                                 }
                             }
-                            console.log(t);
                         }
                     }
-                    console.log(body);
                     if (body) {
                         t = body; //stmts
+                        var content = JSON.stringify(value).replace(/[\u2028\u2029]/g, function(a) {
+                            return a == '\u2028' ? '\\u2028' : '\\u2029';
+                        });
+                        var key = '___$___temp' + new Date().getTime();
                         for (var i = 0; i < t.length; ++i) {
                             if (t[i].type == 'ReturnStatement') {
                                 t = t[i].argument;
                                 var start = t.start;
                                 var end = t.end;
-                                s = s.slice(0, start) + '(function(t){t.prototype.' + name + '=' + JSON.stringify(value).replace(/[\u2028\u2029]/g, function(a) {
-                                    return a == '\u2028' ? '\\u2028' : '\\u2029';
-                                }) + ';return t;})(' + s.slice(start, end) + ')' + s.slice(end);
+                                var returned = s.slice(start, end).replace(/\s*$/gm, '');
+                                var preReturned = returned.slice(0, -2);
+                                var lastReturned = returned.slice(-2);
+                                var tail = s.slice(end);
+                                s = s.slice(0, s.slice(0, start).lastIndexOf('return')) + ';var ' + key + '=' + preReturned;
+                                if (lastReturned == '})') {
+                                    s += ',' + name + ':' + content + lastReturned;
+                                } else {
+                                    s += lastReturned + ';' + key + '.prototype.' + name + '=' + content + ';';
+                                }
+                                s += ';return ' + key + ';' + tail;
                             }
                         }
                     }
