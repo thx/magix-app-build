@@ -49,7 +49,9 @@
 				var t = ast.body[0];
 				if (t.type == 'ExpressionStatement') {
 					t = t.expression;
-					if (t.type == 'CallExpression' && t.callee.type == 'MemberExpression' && t.callee.object.type == 'Identifier' && t.callee.object.name == 'KISSY' && t.callee.property.type == 'Identifier' && t.callee.property.name == 'add' && t.arguments.length >= 2 && t.arguments[1].type == 'FunctionExpression') {
+					console.log(t);
+					if (t.type == 'CallExpression' && t.arguments.length >= 2 && t.arguments[1].type == 'FunctionExpression' && ((t.callee.object && t.callee.object.type == 'Identifier' && t.callee.type == 'MemberExpression' && t.callee.object.name == 'KISSY' && t.callee.property.type == 'Identifier' && t.callee.property.name == 'add') || (t.callee.type == 'Identifier' && t.callee.name == 'define'))) {
+
 						t = t.arguments[1].body.body; //stmts
 						for (var i = 0; i < t.length; ++i) {
 							if (t[i].type == 'ReturnStatement') {
