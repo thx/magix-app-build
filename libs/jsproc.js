@@ -73,15 +73,18 @@
                                 t = t[i].argument;
                                 var start = t.start;
                                 var end = t.end;
-                                var returned = s.slice(start, end).replace(/\s*$/gm, '');
-                                var returnedPre = returned.slice(0, -2);
-                                var returnedTail = returned.slice(-2);
+                                var returned = s.slice(start, end).replace(/\.extend\s*\(\s*\{/, '.extend({');
+
                                 var tail = s.slice(end);
                                 var header = s.slice(0, start);
-                                if (returnedTail == '})') {
-                                    s = header + returnedPre + ',' + name + ':' + content + returnedTail + tail;
+                                header = header.slice(0, header.lastIndexOf('return'));
+                                if (t.arguments.length && t.callee && t.callee.property && t.callee.property.name == 'extend' && t.arguments[0].type == 'ObjectExpression') {
+                                    var extendIdx = returned.indexOf('.extend({') + 9;
+                                    var extendedPre = returned.slice(0, extendIdx);
+                                    var extendTail = returned.slice(extendIdx + 1);
+                                    s = header + ' return ' + extendedPre + name + ':' + content + ',' + extendTail + tail;
                                 } else {
-                                    s = s.slice(0, header.lastIndexOf('return')) + ';var ' + key + '=' + returnedPre + returnedTail + ';' + key + '.prototype.' + name + '=' + content + ';return ' + key + ';' + tail;
+                                    s = header + ';var ' + key + '=' + returned + ';' + key + '.prototype.' + name + '=' + content + ';return ' + key + ';' + tail;
                                 }
                             }
                         }
