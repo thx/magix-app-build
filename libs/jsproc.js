@@ -1,8 +1,7 @@
 (function() {
     var acorn = require('./acorn.js');
-    var acorn_walk = require('./acorn_walk.js');
     module.exports = {
-        removeConsoleX: function(s) {
+        /*removeConsoleX: function(s) {
             /// <param name="s" type="String"></param>
             var ast = acorn.parse(s);
             var arr = [];
@@ -39,18 +38,18 @@
                 return r;
             }
             return s;
-        },
+        },*/
         addProp: function(s, name, value) {
             /// <param name="s" type="String"></param>
             /// <param name="name" type="String"></param>
             /// <param name="value" type="String"></param>
             var ast = acorn.parse(s);
-            if (ast.body.length == 1) {
-                var t = ast.body[0];
+            for (var j = ast.body.length - 1; j >= 0; j--) {
+                var t = ast.body[j];
                 var body;
                 if (t.type == 'ExpressionStatement') {
                     t = t.expression;
-                    if (t.type == 'CallExpression') {
+                    if (t && t.type == 'CallExpression') {
                         if (t.callee.object && t.callee.object.type == 'Identifier' && t.callee.type == 'MemberExpression' && t.callee.object.name == 'KISSY' && t.callee.property.type == 'Identifier' && t.callee.property.name == 'add' && t.arguments.length >= 2 && t.arguments[1].type == 'FunctionExpression') {
                             body = t.arguments[1].body.body;
                         } else if (t.callee.name = 'define' && t.callee.type == 'Identifier' && t.arguments.length >= 1) {
