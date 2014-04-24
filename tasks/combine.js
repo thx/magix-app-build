@@ -15,12 +15,12 @@ module.exports = function(grunt) {
      * @return {[type]}      [description]
      */
 
-    var formatFileContent = function(js, html) {
+    var formatFileContent = function(js, html, htmlPath) {
         var newViewContent = '';
         var minTempContent = mtmin(html);
         //生成view属性
         //newViewContent = jsProc.removeConsoleX(js);
-        newViewContent = jsProc.addProp(js, 'template', minTempContent);
+        newViewContent = jsProc.addProp(js, 'template', minTempContent, htmlPath);
         //newViewContent = Converter.chineseToUnicode(newViewContent);
         return newViewContent;
     };
@@ -42,7 +42,7 @@ module.exports = function(grunt) {
             if (Fs.existsSync(tarTmplPath) && Fs.existsSync(viewJsFiles[i])) {
                 htmlFileContent = Fs.readFileSync(tarTmplPath, "utf8");
                 jsFileContent = Fs.readFileSync(viewJsFiles[i], "utf8");
-                var minContent = formatFileContent(jsFileContent, htmlFileContent);
+                var minContent = formatFileContent(jsFileContent, htmlFileContent, tarTmplPath.replace(/\\{1,}/g, '/').replace(/\/{2,}/g, '/').replace(/\.html$/, ''));
                 Fs.writeFileSync(minPath, minContent, "utf8");
                 //去掉html
                 grunt.file.delete(tarTmplPath, {
