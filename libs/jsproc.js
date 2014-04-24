@@ -1,7 +1,23 @@
 (function() {
     var acorn = require('./acorn.js');
     var acorn_walk = require('./acorn_walk.js');
-
+    var supportColor = (function() {
+        if (process.stdout && !process.stdout.isTTY) {
+            return false;
+        }
+        if (process.platform === 'win32') {
+            return true;
+        }
+        if ('COLORTERM' in process.env) {
+            return true;
+        }
+        if (process.env.TERM === 'dumb') {
+            return false;
+        }
+        if (/^screen|^xterm|^vt100|color|ansi|cygwin|linux/i.test(process.env.TERM)) {
+            return true;
+        }
+    }());
     var isKissy = function(t) {
         return t.callee.object && t.callee.object.type == 'Identifier' && t.callee.type == 'MemberExpression' && t.callee.object.name == 'KISSY' && t.callee.property.type == 'Identifier' && t.callee.property.name == 'add' && t.arguments.length >= 2 && t.arguments[1].type == 'FunctionExpression';
     };
@@ -53,11 +69,11 @@
 
         acorn_walk.simple(ast, {
             CallExpression: function(node) {
-                if (node.callee.type == 'MemberExpression') {
+                if (node.callee && node.callee.type == 'MemberExpression') {
                     if (mreqeustMehtods[node.callee.property.name] == 1) {
                         var lastArgs = node.arguments[node.arguments.length - 1];
                         var managed;
-                        if (lastArgs && lastArgs.type == 'ThisExpression' || (lastArgs.type == 'Identifier' && thisObj[lastArgs.name] == 1)) {
+                        if (lastArgs && (lastArgs.type == 'ThisExpression' || (lastArgs.type == 'Identifier' && thisObj[lastArgs.name] == 1))) {
                             managed = true;
                         }
                         var left = node.callee.object.name;
@@ -70,13 +86,13 @@
                         o[node.callee.start + '~' + node.callee.end] = node.callee.object.name + '.' + node.callee.property.name;
                     } else if (node.callee.property.name == 'manage' && (node.callee.object.type == 'ThisExpression' || thisObj[node.callee.object.name] == 1)) {
                         var last = node.arguments[node.arguments.length - 1];
-                        if (last.type == 'Identifier') {
+                        if (last && last.type == 'Identifier') {
                             var mapped = varMRequests[last.name];
                             if (mapped) {
                                 delete maybeMissing[mapped];
                                 //delete varMRequests[last.name];
                             }
-                        } else if (last.type == 'CallExpression') {
+                        } else if (last && last.type == 'CallExpression') {
                             if (mreqeustMehtods[last.callee.property.name] == 1) {
                                 delete maybeMissing[last.callee.start + '~' + last.callee.end];
                             }
@@ -112,20 +128,26 @@
                 }
             },
             AssignmentExpression: function(node) {
-                if (node.right.type == 'CallExpression' && node.right.callee.type == 'MemberExpression' && mreqeustMehtods[node.right.callee.property.name] == 1) {
-                    varMRequests[node.left.name] = node.right.callee.start + '~' + node.right.callee.end;
+                if (node.right && node.right.type == 'CallExpression' && node.right.callee.type == 'MemberExpression' && mreqeustMehtods[node.right.callee.property.name] == 1) {
+                    varMRequests[lastVar = node.left.name] = node.right.callee.start + '~' + node.right.callee.end;
                 }
             }
         });
 
         for (var p in maybeMissing) {
-            console.warn('WARN: Maybe missing manage: ' + maybeMissing[p] + ' @ ' + path);
+            if (supportColor) {
+                console.log('WARN: \033[35mMaybe missing manage: ' + maybeMissing[p] + ' @ ' + path + '\033[0m');
+            } else {
+                console.warn('WARN: Maybe missing manage: ' + maybeMissing[p] + ' @ ' + path);
+            }
         }
 
     };
     module.exports = {
         /*removeConsoleX: function(s) {
-            /// <param name="s" type="String"></param>
+            /// <param name="
+                s " type="
+                String "></param>
             var ast = acorn.parse(s);
             var arr = [];
 
@@ -163,9 +185,6 @@
             return s;
         },*/
         addProp: function(s, name, value, path) {
-            /// <param name="s" type="String"></param>
-            /// <param name="name" type="String"></param>
-            /// <param name="value" type="String"></param>
             var ast = acorn.parse(s);
             processMRequest(ast, path);
 
