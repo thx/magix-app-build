@@ -64,26 +64,19 @@
         var thisObj = {};
         var varMRequests = {};
         var maybeMissing = {};
-        var managedReqeusts = {};
-        var lastVar;
 
         acorn_walk.simple(ast, {
             CallExpression: function(node) {
                 if (node.callee && node.callee.type == 'MemberExpression') {
-                    if (mreqeustMehtods[node.callee.property.name] == 1) {
+                    if (mreqeustMehtods[node.callee.property.name] == 1 && node.callee.object.type == 'Identifier' && /^[A-Z]/.test(node.callee.object.name)) {
                         var lastArgs = node.arguments[node.arguments.length - 1];
                         var managed;
                         if (lastArgs && (lastArgs.type == 'ThisExpression' || (lastArgs.type == 'Identifier' && thisObj[lastArgs.name] == 1))) {
                             managed = true;
                         }
-                        var left = node.callee.object.name;
                         if (!managed) {
-                            var origin = varMRequests[left];
-                            managed = ( !! managedReqeusts[origin]) || lastVar == left;
+                            maybeMissing[node.callee.start + '~' + node.callee.end] = node.callee.object.name + '.' + node.callee.property.name;
                         }
-                        //console.log(lastArgs, thisObj);
-                        var o = managed ? managedReqeusts : maybeMissing;
-                        o[node.callee.start + '~' + node.callee.end] = node.callee.object.name + '.' + node.callee.property.name;
                     } else if (node.callee.property.name == 'manage' && (node.callee.object.type == 'ThisExpression' || thisObj[node.callee.object.name] == 1)) {
                         var last = node.arguments[node.arguments.length - 1];
                         if (last && last.type == 'Identifier') {
@@ -92,7 +85,7 @@
                                 delete maybeMissing[mapped];
                                 //delete varMRequests[last.name];
                             }
-                        } else if (last && last.type == 'CallExpression') {
+                        } else if (last && last.type == 'CallExpression' && last.callee.type == 'MemberExpression') {
                             if (mreqeustMehtods[last.callee.property.name] == 1) {
                                 delete maybeMissing[last.callee.start + '~' + last.callee.end];
                             }
@@ -107,8 +100,8 @@
                         if (declaration.init) {
                             switch (declaration.init.type) {
                                 case 'CallExpression':
-                                    if (declaration.init.callee.type == 'MemberExpression' && mreqeustMehtods[declaration.init.callee.property.name] == 1) {
-                                        varMRequests[lastVar = declaration.id.name] = declaration.init.callee.start + '~' + declaration.init.callee.end;
+                                    if (declaration.init.callee.type == 'MemberExpression' && mreqeustMehtods[declaration.init.callee.property.name] == 1 && declaration.init.callee.object.type == 'Identifier' && /^[A-Z]/.test(declaration.init.callee.object.name)) {
+                                        varMRequests[declaration.id.name] = declaration.init.callee.start + '~' + declaration.init.callee.end;
                                     }
                                     break;
                                 case 'ThisExpression':
@@ -128,8 +121,8 @@
                 }
             },
             AssignmentExpression: function(node) {
-                if (node.right && node.right.type == 'CallExpression' && node.right.callee.type == 'MemberExpression' && mreqeustMehtods[node.right.callee.property.name] == 1) {
-                    varMRequests[lastVar = node.left.name] = node.right.callee.start + '~' + node.right.callee.end;
+                if (node.right && node.right.type == 'CallExpression' && node.right.callee.type == 'MemberExpression' && mreqeustMehtods[node.right.callee.property.name] == 1 && node.right.callee.object.type == 'Identifier' && /^[A-Z]/.test(node.right.callee.object.name)) {
+                    varMRequests[node.left.name] = node.right.callee.start + '~' + node.right.callee.end;
                 }
             }
         });
@@ -144,46 +137,6 @@
 
     };
     module.exports = {
-        /*removeConsoleX: function(s) {
-            /// <param name="
-                s " type="
-                String "></param>
-            var ast = acorn.parse(s);
-            var arr = [];
-
-            function add(start, end) {
-                for (var i = 0; i < arr.length; ++i) {
-                    if (arr[i][0] <= start && arr[i][1] >= end) return;
-                }
-                for (var i = arr.length - 1; i >= 0; --i) {
-                    if (arr[i][0] >= start && arr[i][1] <= end) arr.splice(i, 1);
-                }
-                arr.push([start, end]);
-            }
-            acorn_walk.simple(ast, {
-                ExpressionStatement: function(node) {
-                    var x = node.expression;
-                    if (x.type == 'CallExpression' && x.callee.type == 'MemberExpression' && x.callee.object.type == 'Identifier' && x.callee.object.name == 'console') {
-                        add(node.start, node.end);
-                    }
-                }
-            });
-            arr.sort(function(a, b) {
-                return a[0] - b[0];
-            });
-            if (arr.length) {
-                arr.push([s.length]);
-                var r = '';
-                if (arr[0][0] > 0) {
-                    r = s.slice(0, arr[0][0]);
-                }
-                for (var i = 1; i < arr.length; ++i) {
-                    r += ';' + s.slice(arr[i - 1][1], arr[i][0]);
-                }
-                return r;
-            }
-            return s;
-        },*/
         addProp: function(s, name, value, path) {
             var ast = acorn.parse(s);
             processMRequest(ast, path);

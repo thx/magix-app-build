@@ -25,7 +25,7 @@ module.exports = function(grunt) {
                 sourceMap: compress == 'full',
                 preserveComments: 'some'
             },
-            my_target: {
+            files: {
                 files: jsMinMap
             }
         });
