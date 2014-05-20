@@ -10,12 +10,14 @@ module.exports = function(grunt) {
         var tarFiles = Helper.getAllFiles(jsHome);
         var jsFiles = Helper.getTypedFiles(tarFiles, ".js");
         var jsMinMap = {};
+        var isMined = /-min\.js$/i;
         for (var i = 0; i < jsFiles.length; i++) {
             var tarJs = jsFiles[i];
-            var destJs = tarJs.split(".js")[0] + "-min.js";
-            jsMinMap[destJs] = new Array(tarJs);
+            if (!isMined.test(tarJs)) {
+                var destJs = tarJs.split(".js")[0] + "-min.js";
+                jsMinMap[destJs] = new Array(tarJs);
+            }
         }
-
         grunt.config.set('uglify', {
             options: {
                 compress: {
