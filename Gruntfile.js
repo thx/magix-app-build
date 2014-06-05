@@ -6,6 +6,7 @@ module.exports = function(grunt) {
     var destDir = grunt.option("destDir");
     var compress = grunt.option('compress');
     var c2u = grunt.option('c2u');
+    var tmplKey = grunt.option('tmplKey') || 'template';
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -29,7 +30,8 @@ module.exports = function(grunt) {
         },
         combine: {
             build: {
-                appSrc: destDir
+                appSrc: destDir,
+                tmplKey: tmplKey
             }
         },
         minify: {
