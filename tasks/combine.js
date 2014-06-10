@@ -18,6 +18,7 @@ module.exports = function(grunt) {
         var newViewContent = '';
         //生成view属性
         //newViewContent = jsProc.removeConsoleX(js);
+        html = html.replace(/\s+/g, ' ').replace(/<!--[\s\S]*?-->/g, '');
         newViewContent = jsProc.addProp(js, tmplKey, html, htmlPath);
         //newViewContent = Converter.chineseToUnicode(newViewContent);
         return newViewContent;
