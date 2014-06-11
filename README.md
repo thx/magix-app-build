@@ -1,5 +1,7 @@
 # Magix应用打包脚本
 
+## This is the tools used for the release of magix application 
+
 ## 包含Task
 * Task: clear - 清空指定目录
 * Task: copy - 拷贝你要打包的app文件夹
@@ -21,11 +23,16 @@
          */
         build: {
             main: {
-                src: '/opt/local/share/nginx/html/mbp-new/app/', //magix view 所在的入口文件夹路径
-                dest: '/opt/local/share/nginx/html/magix-app-build/build/app/', //处理后文件夹的路径
-                compress: 'normal', //压缩级别 mini 或者normal
-                c2u: false, //中文转化unicode
-                tmplKey: 'template' //view对应模板字段的key
+            	//src: magix view 所在的入口文件夹路径
+                src: '/opt/local/share/nginx/html/mbp-new/app/', 
+                //dest: 处理后文件夹的路径
+                dest: '/opt/local/share/nginx/html/magix-app-build/build/app/', 
+                //compress:压缩级别 mini 或者normal
+                compress: 'normal', 
+                //c2u: 是否需要中文转化unicode
+                c2u: false,
+                //tmplKey: view对应模板字段默认为template
+                tmplKey: 'template' 
             }
         }
 
