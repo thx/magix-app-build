@@ -1,6 +1,6 @@
 # Magix应用打包脚本
 
-## This is the tools used for the release of magix application 
+This is the tools used for the release of magix application 
 
 ## 包含Task
 * Task: clear - 清空指定目录
@@ -18,9 +18,6 @@
 
 ### 根据你的应用配置Gruntfile.js
 
-		/**
-         * 只需要修改配置到这里
-         */
         build: {
             main: {
             	//src: magix view 所在的入口文件夹路径
@@ -36,7 +33,21 @@
             }
         }
 
-### 运行 grunt 命令即可完成打包
+### 配置package.json
+
+
+        "devDependencies": {
+            "grunt": "~0.4.1",
+            "grunt-contrib-copy": "~0.4.1",
+            "grunt-contrib-clean": "~0.4.0",
+            "grunt-contrib-uglify": "",
+            "grunt-contrib-cssmin": "~0.5.0",
+            "load-grunt-tasks": "",
+            "magix-product-release": ""
+        }
+
+### 执行grunt 即可
+
 
 
 

@@ -1,6 +1,6 @@
 {
 	"name": "magix-product-release",
-	"version": "0.1.1",
+	"version": "0.1.6",
 	"homepage": "http://thx.alibaba-inc.com/magix/",
 	"author": {
 		"name": "THX @ Alimama MUX",
@@ -17,12 +17,21 @@
 	"engines": {
 		"node": ">= 0.8.0"
 	},
+	"dependencies": {
+		"grunt": "~0.4.1",
+		"grunt-contrib-copy": "~0.4.1",
+		"grunt-contrib-clean": "~0.4.0",
+		"grunt-contrib-uglify": "",
+		"grunt-contrib-cssmin": "~0.5.0",
+		"load-grunt-tasks": ""
+	},
 	"devDependencies": {
 		"grunt": "~0.4.1",
 		"grunt-contrib-copy": "~0.4.1",
 		"grunt-contrib-clean": "~0.4.0",
 		"grunt-contrib-uglify": "",
-		"grunt-contrib-cssmin": "~0.5.0"
+		"grunt-contrib-cssmin": "~0.5.0",
+		"load-grunt-tasks": ""
 	},
 	"contributors": [
     {

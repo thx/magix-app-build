@@ -3,6 +3,12 @@
  */
 module.exports = function(grunt) {
 
+    require('load-grunt-tasks')(grunt, {pattern: 'grunt-contrib-*'});
+
+    var combine = require('./combine');
+    var clear = require('./clear');
+    var cssmin = require('./cssmin');
+    var minify = require('./minify');
 
     grunt.registerMultiTask('build', 'set config to build', function() {
 
@@ -11,57 +17,53 @@ module.exports = function(grunt) {
         var c2u = this.data.c2u;
         var tmplKey = this.data.tmplKey;
         var compress = this.data.compress;
-     
-        grunt.config.set('clean', {
-            build: {
-                src: dest
+
+        grunt.initConfig({
+            clean: {
+                build: {
+                    src: dest
+                },
+                options: {
+                    force: true
+                }
             },
-            options: {
-                force: true
+            copy: {
+                main: {
+                    files: [{
+                        expand: true,
+                        cwd: src,
+                        src: ['**'],
+                        dest: dest
+                    }]
+                }
+            },
+            combine: {
+                build: {
+                    appSrc: dest,
+                    tmplKey: tmplKey
+                }
+            },
+            minify: {
+                build: {
+                    src: dest,
+                    compress: compress
+                }
+            },
+            mincss: {
+                build: {
+                    src: dest
+                }
+            },
+            clear: {
+                build: {
+                    src: dest,
+                    compress: compress,
+                    c2u: c2u
+                }
             }
         });
 
-        grunt.config.set('copy', {
-            main: {
-                files: [{
-                    expand: true,
-                    cwd: src,
-                    src: ['**'],
-                    dest: dest
-                }]
-            }
-        });
-
-
-        grunt.config.set('combine', {
-            build: {
-                appSrc: dest,
-                tmplKey: tmplKey
-            }
-        });
-
-        grunt.config.set('minify', {
-            build: {
-                src: dest,
-                compress: compress
-            }
-        });
-
-
-        grunt.config.set('mincss', {
-            build: {
-                src: dest
-            }
-        });
-
-        grunt.config.set('clear', {
-            build: {
-                src: dest,
-                compress: compress,
-                c2u: c2u
-            }
-        });
-
+        
         grunt.task.run('clean');
         grunt.task.run('copy');
         grunt.task.run('combine');
