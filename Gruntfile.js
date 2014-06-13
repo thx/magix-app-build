@@ -12,13 +12,17 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+
         /**
          * 只需要修改配置到这里
          */
-        build: {
+        magixbuild: {
             main: {
                 src: '/opt/local/share/nginx/html/mbp-new/app/', //magix view 所在的入口文件夹路径
-                dest: '/opt/local/share/nginx/html/magix-app-build/build/app/', //处理后文件夹的路径
+                dest: '/opt/local/share/nginx/html/magix-app-build/build/app/' //处理后文件夹的路径
+                
+            },
+            options: {
                 compress: 'normal', //压缩级别
                 c2u: false, //中文转化unicode
                 tmplKey: 'template' //view对应模板字段的key
@@ -26,8 +30,7 @@ module.exports = function(grunt) {
         }
     });
     grunt.loadTasks('tasks');
-    grunt.registerTask('default', ['build']);
-    grunt.registerTask('pack', ['clean', 'copy', 'combine', 'minify', 'mincss', 'clear']);
 
+    grunt.registerTask('default', ['magixbuild']);
 
 };

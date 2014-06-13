@@ -1,6 +1,6 @@
 # Magix应用打包脚本
 
-This is the tools used for the release of magix application 
+This is the tools used for the release of Magix Application 
 
 ## 包含Task
 * Task: clear - 清空指定目录
@@ -16,37 +16,35 @@ This is the tools used for the release of magix application
 * 安装node环境
 * 安装grunt-cli http://gruntjs.com/getting-started (如果有0.4.0以下版本的grunt 请执行npm uninstall -g grunt卸载，再安装grunt-cli)
 
+### 安装
+    npm install magix-product-release
+
 ### 根据你的应用配置Gruntfile.js
 
-        build: {
+        magixbuild: {
+            
             main: {
-            	//src: magix view 所在的入口文件夹路径
-                src: '/opt/local/share/nginx/html/mbp-new/app/', 
-                //dest: 处理后文件夹的路径
-                dest: '/opt/local/share/nginx/html/magix-app-build/build/app/', 
-                //compress:压缩级别 mini 或者normal
+
+                //magix view 所在的入口文件夹路径
+                src: '/opt/local/share/nginx/html/mbp-new/app/',
+                //处理后文件夹的路径 
+                dest: '/opt/local/share/nginx/html/magix-app-build/build/app/' 
+
+            },
+            options: {
+
+                //压缩级别
                 compress: 'normal', 
-                //c2u: 是否需要中文转化unicode
-                c2u: false,
-                //tmplKey: view对应模板字段默认为template
+                //中文转化unicode
+                c2u: false, 
+                //view对应模板字段的key
                 tmplKey: 'template' 
+
             }
         }
 
-### 配置package.json
 
-
-        "devDependencies": {
-            "grunt": "~0.4.1",
-            "grunt-contrib-copy": "~0.4.1",
-            "grunt-contrib-clean": "~0.4.0",
-            "grunt-contrib-uglify": "",
-            "grunt-contrib-cssmin": "~0.5.0",
-            "load-grunt-tasks": "",
-            "magix-product-release": ""
-        }
-
-### 执行grunt 即可
+### 执行grunt magixbuild即可
 
 
 
