@@ -13,8 +13,8 @@ module.exports = function(grunt) {
         /**
          * 只需要修改配置到这里
          */
-        magixbuild: {
-            main: {
+        magix: {
+            build: {
                 src: src, //magix view 所在的入口文件夹路径
                 dest: dest //处理后文件夹的路径
             },
@@ -25,6 +25,6 @@ module.exports = function(grunt) {
             }
         }
     });
-    grunt.loadTasks('tasks');
-    grunt.registerTask('default', ['magixbuild']);
+    grunt.loadNpmTasks('magix-app-build'); 
+    grunt.registerTask('default', ['magix']);
 };

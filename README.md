@@ -9,13 +9,13 @@ This is the tools used for the release of Magix Application
 * 安装grunt-cli http://gruntjs.com/getting-started (如果有0.4.0以下版本的grunt 请执行npm uninstall -g grunt卸载，再安装grunt-cli)
 
 ### 安装
-    npm install magix-product-release
+    npm install magix-app-build
 
 ### 根据你的应用配置Gruntfile.js
 
-        magixbuild: {
+        magix: {
 
-            main: {
+            build: {
 
                 //magix view 所在的入口文件夹路径
                 src: '/opt/local/share/nginx/html/mbp-new/app/',
@@ -36,7 +36,7 @@ This is the tools used for the release of Magix Application
         }
 
 
-### 执行grunt magixbuild即可
+### 执行grunt magix即可
 
 
 

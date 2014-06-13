@@ -14,7 +14,7 @@ module.exports = function(grunt) {
     var cssmin = require('./cssmin');
     var minify = require('./minify');
 
-    grunt.registerMultiTask('magixbuild', 'set config to build', function() {
+    grunt.registerMultiTask('magix', 'set config to build', function() {
 
         var src = this.data.src;
         var dest = this.data.dest;
