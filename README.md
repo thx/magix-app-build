@@ -1,14 +1,6 @@
 # Magix应用打包脚本
 
-This is the tools used for the release of Magix Application 
-
-## 包含Task
-* Task: clear - 清空指定目录
-* Task: copy - 拷贝你要打包的app文件夹
-* Task: combine - 合并magix view 和js 解决跨域问题
-* Task: minify - 压缩js
-* Task: mincss - 压缩css
-* Task: clean - 清理无用的文件
+This is the tools used for the release of Magix Application
 
 ## 使用方法
 
@@ -22,23 +14,23 @@ This is the tools used for the release of Magix Application
 ### 根据你的应用配置Gruntfile.js
 
         magixbuild: {
-            
+
             main: {
 
                 //magix view 所在的入口文件夹路径
                 src: '/opt/local/share/nginx/html/mbp-new/app/',
-                //处理后文件夹的路径 
-                dest: '/opt/local/share/nginx/html/magix-app-build/build/app/' 
+                //处理后文件夹的路径
+                dest: '/opt/local/share/nginx/html/magix-app-build/build/app/'
 
             },
             options: {
 
                 //压缩级别
-                compress: 'normal', 
+                compress: 'normal',
                 //中文转化unicode
-                c2u: false, 
+                c2u: false,
                 //view对应模板字段的key
-                tmplKey: 'template' 
+                tmplKey: 'template'
 
             }
         }
