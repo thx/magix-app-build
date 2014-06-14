@@ -1,4 +1,4 @@
-/**
+﻿/**
  * magix 项目打包脚本
  */
 module.exports = function(grunt) {
@@ -25,6 +25,6 @@ module.exports = function(grunt) {
             }
         }
     });
-    grunt.loadNpmTasks('magix-app-build'); 
+    grunt.loadTasks('tasks');
     grunt.registerTask('default', ['magix']);
 };
