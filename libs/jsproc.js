@@ -19,7 +19,7 @@
         }
     }());
     var isKissy = function(t) {
-        return t.callee.object && t.callee.object.type == 'Identifier' && t.callee.type == 'MemberExpression' && t.callee.object.name == 'KISSY' && t.callee.property.type == 'Identifier' && t.callee.property.name == 'add' && t.arguments.length >= 2 && t.arguments[1].type == 'FunctionExpression';
+        return t.callee.object && t.callee.object.type == 'Identifier' && t.callee.type == 'MemberExpression' && t.callee.object.name == 'KISSY' && t.callee.property.type == 'Identifier' && t.callee.property.name == 'add' && ((t.arguments.length >= 2 && t.arguments[1].type == 'FunctionExpression') || (t.arguments.length >= 1 && t.arguments[0].type == 'FunctionExpression'));
     };
     var isDefine = function(t) {
         return t.callee.name == 'define' && t.callee.type == 'Identifier' && t.arguments.length > 1;
@@ -52,94 +52,9 @@
         }
         return best;
     };
-    var mreqeustMehtods = {
-        fetchAll: 1,
-        saveAll: 1,
-        fetchOne: 1,
-        saveOne: 1,
-        fetchOrder: 1,
-        saveOrder: 1
-    };
-    var processMRequest = function(ast, path) {
-        var thisObj = {};
-        var varMRequests = {};
-        var maybeMissing = {};
-
-        acorn_walk.simple(ast, {
-            CallExpression: function(node) {
-                if (node.callee && node.callee.type == 'MemberExpression') {
-                    if (mreqeustMehtods[node.callee.property.name] == 1 && node.callee.object.type == 'Identifier' && /^[A-Z]/.test(node.callee.object.name)) {
-                        var lastArgs = node.arguments[node.arguments.length - 1];
-                        var managed;
-                        if (lastArgs && (lastArgs.type == 'ThisExpression' || (lastArgs.type == 'Identifier' && thisObj[lastArgs.name] == 1))) {
-                            managed = true;
-                        }
-                        if (!managed) {
-                            maybeMissing[node.callee.start + '~' + node.callee.end] = node.callee.object.name + '.' + node.callee.property.name;
-                        }
-                    } else if (node.callee.property.name == 'manage' && (node.callee.object.type == 'ThisExpression' || thisObj[node.callee.object.name] == 1)) {
-                        var last = node.arguments[node.arguments.length - 1];
-                        if (last && last.type == 'Identifier') {
-                            var mapped = varMRequests[last.name];
-                            if (mapped) {
-                                delete maybeMissing[mapped];
-                                //delete varMRequests[last.name];
-                            }
-                        } else if (last && last.type == 'CallExpression' && last.callee.type == 'MemberExpression') {
-                            if (mreqeustMehtods[last.callee.property.name] == 1) {
-                                delete maybeMissing[last.callee.start + '~' + last.callee.end];
-                            }
-                        }
-                    }
-                }
-            },
-            VariableDeclaration: function(node) {
-                if (node.kind == 'var' && node.declarations && node.declarations.length) {
-                    for (var i = 0; i < node.declarations.length; i++) {
-                        var declaration = node.declarations[i];
-                        if (declaration.init) {
-                            switch (declaration.init.type) {
-                                case 'CallExpression':
-                                    if (declaration.init.callee.type == 'MemberExpression' && mreqeustMehtods[declaration.init.callee.property.name] == 1 && declaration.init.callee.object.type == 'Identifier' && /^[A-Z]/.test(declaration.init.callee.object.name)) {
-                                        varMRequests[declaration.id.name] = declaration.init.callee.start + '~' + declaration.init.callee.end;
-                                    }
-                                    break;
-                                case 'ThisExpression':
-                                    thisObj[declaration.id.name] = 1;
-                                    break;
-                                case 'Identifier':
-                                    if (thisObj[declaration.init.name]) {
-                                        thisObj[declaration.id.name] = 1;
-                                    }
-                                    if (varMRequests[declaration.init.name]) {
-                                        varMRequests[declaration.id.name] = varMRequests[declaration.init.name];
-                                    }
-                                    break;
-                            }
-                        }
-                    }
-                }
-            },
-            AssignmentExpression: function(node) {
-                if (node.right && node.right.type == 'CallExpression' && node.right.callee.type == 'MemberExpression' && mreqeustMehtods[node.right.callee.property.name] == 1 && node.right.callee.object.type == 'Identifier' && /^[A-Z]/.test(node.right.callee.object.name)) {
-                    varMRequests[node.left.name] = node.right.callee.start + '~' + node.right.callee.end;
-                }
-            }
-        });
-
-        for (var p in maybeMissing) {
-            if (supportColor) {
-                console.log('WARN: \033[35mMaybe missing manage: ' + maybeMissing[p] + ' @ ' + path + '\033[0m');
-            } else {
-                console.warn('WARN: Maybe missing manage: ' + maybeMissing[p] + ' @ ' + path);
-            }
-        }
-
-    };
     module.exports = {
         addProp: function(s, name, value, path) {
             var ast = acorn.parse(s);
-            processMRequest(ast, path);
 
             var body = findBestBody(ast, path);
             if (body) {
