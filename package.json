@@ -21,24 +21,24 @@
 		"grunt": "~0.4.1",
 		"grunt-contrib-copy": "~0.4.1",
 		"grunt-contrib-clean": "~0.4.0",
-		"grunt-contrib-uglify": "",
+		"grunt-contrib-uglify": "~0.6.0",
 		"grunt-contrib-cssmin": "~0.5.0"
 	},
 	"devDependencies": {
 		"grunt": "~0.4.1",
 		"grunt-contrib-copy": "~0.4.1",
 		"grunt-contrib-clean": "~0.4.0",
-		"grunt-contrib-uglify": "",
+		"grunt-contrib-uglify": "~0.6.0",
 		"grunt-contrib-cssmin": "~0.5.0",
 		"grunt-contrib-jshint": ""
 	},
 	"contributors": [
     {
-      "name": "xinglie",
-      "url": "https://github.com/xinglie"
-    },{
-      "name": "sifei",
-      "url": "http://mengbaobao.blogspot.com"
-    }]
+		"name": "xinglie",
+		"url": "https://github.com/xinglie"
+	}, {
+		"name": "sifei",
+		"url": "http://mengbaobao.blogspot.com"
+	}]
 
 }

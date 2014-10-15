@@ -6,6 +6,7 @@ module.exports = function(grunt) {
     grunt.registerMultiTask('minify', 'minify js', function() {
         var jsHome = this.data.src; //传入js文件夹路径
         var compress = this.data.compress;
+        var c2u = this.data.c2u;
 
         var tarFiles = Helper.getAllFiles(jsHome);
         var jsFiles = Helper.getTypedFiles(tarFiles, ".js");
@@ -25,7 +26,8 @@ module.exports = function(grunt) {
                     warnings: false
                 },
                 sourceMap: compress == 'full',
-                preserveComments: 'some'
+                preserveComments: 'some',
+                ASCIIOnly: !! c2u
             },
             files: {
                 files: jsMinMap

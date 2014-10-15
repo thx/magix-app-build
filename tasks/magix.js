@@ -29,7 +29,7 @@ module.exports = function(grunt) {
         var tmplKey = options.tmplKey;
         var compress = options.compress;
 
-        console.log('options:',c2u, tmplKey, compress);
+        console.log('options:', c2u, tmplKey, compress);
         grunt.verbose.writeflags(options, 'Options');
 
         grunt.initConfig({
@@ -60,7 +60,8 @@ module.exports = function(grunt) {
             minify: {
                 build: {
                     src: dest,
-                    compress: compress
+                    compress: compress,
+                    c2u: c2u
                 }
             },
             mincss: {
@@ -77,7 +78,7 @@ module.exports = function(grunt) {
             }
         });
 
-        
+
         grunt.task.run('clean');
         grunt.task.run('copy');
         grunt.task.run('combine');
