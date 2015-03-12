@@ -8,9 +8,11 @@ module.exports = function(grunt) {
         var tarFiles = Helper.getAllFiles(jsHome);
         var files = Helper.getTypedFiles(tarFiles, ".css");
         var minMap = {};
+        var minSuffix = this.data.minSuffix;
+        minSuffix = minSuffix == 'no' ? '.css' : minSuffix + '.css';
         for (var i = 0; i < files.length; i++) {
             var tarCss = files[i];
-            var destCss = tarCss.split(".css")[0] + "-min.css";
+            var destCss = tarCss.split(".css")[0] + minSuffix;
             minMap[destCss] = tarCss;
         }
 

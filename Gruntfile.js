@@ -7,6 +7,7 @@ module.exports = function(grunt) {
     var compress = grunt.option('compress');
     var c2u = grunt.option('c2u') || false;
     var tmplKey = grunt.option('tmplKey') || 'template';
+    var minSuffix = grunt.option('minSuffix') || '-min';
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -21,7 +22,8 @@ module.exports = function(grunt) {
             options: {
                 compress: compress, //压缩级别
                 c2u: c2u, //中文转化unicode
-                tmplKey: tmplKey //view对应模板字段的key
+                tmplKey: tmplKey, //view对应模板字段的key
+                minSuffix: minSuffix //压缩的后缀名称默认是-min 如果传入no 就表示不加后缀 index.css压缩后仍是 index.css
             }
         }
     });

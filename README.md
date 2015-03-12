@@ -30,7 +30,8 @@ This is the tools used for the release of Magix Application
                 //中文转化unicode
                 c2u: false,
                 //view对应模板字段的key
-                tmplKey: 'template'
+                tmplKey: 'template',
+                minSuffix: '.min'//压缩文件的后缀名称 可以是 .min -min(默认) 如果是no则保持原来的文件名 index.css压缩后仍是 index.css
 
             }
         }

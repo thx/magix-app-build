@@ -7,6 +7,8 @@ module.exports = function(grunt) {
         var jsHome = this.data.src; //传入js文件夹路径
         var compress = this.data.compress;
         var c2u = this.data.c2u;
+        var minSuffix = this.data.minSuffix;
+        minSuffix = minSuffix == 'no' ? '.js' : minSuffix + '.js';
 
         var tarFiles = Helper.getAllFiles(jsHome);
         var jsFiles = Helper.getTypedFiles(tarFiles, ".js");
@@ -15,7 +17,7 @@ module.exports = function(grunt) {
         for (var i = 0; i < jsFiles.length; i++) {
             var tarJs = jsFiles[i];
             if (!isMined.test(tarJs)) {
-                var destJs = tarJs.split(".js")[0] + "-min.js";
+                var destJs = tarJs.split(".js")[0] + minSuffix;
                 jsMinMap[destJs] = new Array(tarJs);
             }
         }

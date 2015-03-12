@@ -28,8 +28,9 @@ module.exports = function(grunt) {
         var c2u = options.c2u;
         var tmplKey = options.tmplKey;
         var compress = options.compress;
+        var minSuffix = options.minSuffix || '-min';
 
-        console.log('options:', c2u, tmplKey, compress);
+        console.log('options:', c2u, tmplKey, compress, minSuffix);
         grunt.verbose.writeflags(options, 'Options');
 
         grunt.initConfig({
@@ -61,12 +62,14 @@ module.exports = function(grunt) {
                 build: {
                     src: dest,
                     compress: compress,
-                    c2u: c2u
+                    c2u: c2u,
+                    minSuffix: minSuffix
                 }
             },
             mincss: {
                 build: {
-                    src: dest
+                    src: dest,
+                    minSuffix: minSuffix
                 }
             },
             clear: {

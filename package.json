@@ -1,6 +1,6 @@
 {
 	"name": "magix-app-build",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"homepage": "http://thx.alibaba-inc.com/magix/",
 	"author": {
 		"name": "THX @ Alimama MUX",
@@ -38,7 +38,7 @@
 		"url": "https://github.com/xinglie"
 	}, {
 		"name": "sifei",
-		"url": "http://mengbaobao.blogspot.com"
+		"url": "https://github.com/zhangmeng712"
 	}]
 
 }
