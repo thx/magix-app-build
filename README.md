@@ -40,6 +40,53 @@ This is the tools used for the release of Magix Application
 ### 执行grunt magix即可
 
 
+## 注意
+
+`npm`升级到3版本之后改变了依赖的安装方式，这里有说明：http://dailyjs.com/2015/06/26/npm-3/，所有的依赖都会平铺到顶级目录里，这就导致`magix-app-build`依赖的任务找不到而失败。
+
+以下提供两个解决方案：
+
+### 方案1
+
+执行完`npm install`后再去`node_modules/magix-app-build`目录下再执行一下`npm install`即可
+
+### 方案2
+
+在你的项目`gruntfile.js`文件里增加`magix-app-build`的任务加载，完整的代码如下
+
+```js
+module.exports = function(grunt) {
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
+        magix: {
+            build: {
+                //magix view 所在的入口文件夹路径
+                src: './src/',
+                //处理后文件夹的路径
+                dest: './build/'
+            },
+            options: {
+                //压缩级别
+                compress: 'normal',
+                //中文转化unicode
+                c2u: false,
+                //view对应模板字段的key
+                tmplKey: 'tmpl'
+            }
+        }
+    });
+    /*magix依赖的任务加载开始*/
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    /*magix依赖的任务加载结束*/
+    grunt.loadNpmTasks('magix-app-build');
+    grunt.registerTask('default', ['magix']);
+};
+```
+
+
 
 
 
