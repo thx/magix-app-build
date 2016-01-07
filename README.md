@@ -54,7 +54,7 @@ This is the tools used for the release of Magix Application
 
 ### 方案2
 
-在你的项目`gruntfile.js`文件里增加`magix-app-build`的任务加载，完整的代码如下
+在你的项目`gruntfile.js`文件里增加`magix-app-build`依赖的任务加载，完整的代码如下
 
 ```js
 module.exports = function(grunt) {
