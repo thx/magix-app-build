@@ -42,7 +42,9 @@ This is the tools used for the release of Magix Application
 
 ## 注意
 
-`npm`升级到3版本之后改变了依赖的安装方式，这里有说明：http://dailyjs.com/2015/06/26/npm-3/，所有的依赖都会平铺到顶级目录里，这就导致`magix-app-build`依赖的任务找不到而失败。
+`npm`升级到3版本之后改变了依赖的安装方式，这里有说明：http://dailyjs.com/2015/06/26/npm-3/
+
+所有的依赖都会平铺到顶级目录里，这就导致`magix-app-build`依赖的任务找不到而失败。
 
 以下提供两个解决方案：
 
